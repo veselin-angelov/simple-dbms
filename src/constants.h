@@ -5,7 +5,7 @@
 #ifndef DBMS_CONSTANTS_H
 #define DBMS_CONSTANTS_H
 
-#define DB_PATH "/home/vesko/Documents/FMI/DS/DBMS/databases/"
+static std::string DB_PATH = "/home/vesko/Documents/FMI/DS/simple-dbms/databases/";
 
 enum TypeEnum
 {

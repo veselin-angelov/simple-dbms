@@ -13,27 +13,35 @@
 //#include "PrimaryKey.h"
 #include "../../constants.h"
 #include "Column.h"
+#include "../../helpers/headers/BinaryReader.h"
 
 class Table
 {
 private:
+    static BinaryReader reader;
+
+private:
     std::string name;
-    std::string path; // = std::string(DB_PATH) + name;
+    std::string path; // std::string(DB_PATH) + name;
     std::vector<Column*> columns;
     Column* primary_key = nullptr;
     std::size_t valid_position = 0;
 
-public:
-//    explicit Table(const std::string &name);
+private:
+    Table() = default;
+    explicit Table(const std::string &name);
     ~Table();
 
-//    func loadTable(name)
-    void print() const;
-
+private:
     Column* getColumnByName(std::string& name) const;
+
+    void print() const; // remove
+
+//    void updateValidPosition(std::size_t position) const; // TODO maybe not here
 
 public:
     friend class CreateTableCommand;
+    friend class InsertIntoCommand;
 };
 
 

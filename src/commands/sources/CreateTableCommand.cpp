@@ -60,7 +60,7 @@ CreateTableCommand::CreateTableCommand(std::istream &in)
     save_to_file(table);
 }
 
-void CreateTableCommand::save_to_file(const Table &table)
+void CreateTableCommand::save_to_file(const Table &table) const
 {
     std::ifstream f(table.path);
     if (f.good()) throw std::invalid_argument("Table " + table.name + " already exists!");
@@ -69,27 +69,25 @@ void CreateTableCommand::save_to_file(const Table &table)
 
     if (!table_file.is_open()) throw std::runtime_error("Opening table file failed!");
 
-    table_file.write(reinterpret_cast<const char*>(&table.valid_position), sizeof(table.valid_position));
-
-    write_string(table_file, table.name);
+    writer.write_number(table_file, table.valid_position);
 
     size_t size = table.columns.size();
-    table_file.write(reinterpret_cast<const char*>(&size), sizeof(size));
+    writer.write_number(table_file, size);
 
     for (auto &column: table.columns)
     {
-        write_string(table_file, column->getName());
-        write_string(table_file, column->getType()->name());
+        writer.write_string(table_file, column->getName());
+        writer.write_string(table_file, column->getType()->name());
     }
 
-    if (table.primary_key) write_string(table_file, table.primary_key->getName());
+    if (table.primary_key) writer.write_string(table_file, table.primary_key->getName());
 
     create_data_files(table);
 
     table.print();
 }
 
-void CreateTableCommand::create_data_files(const Table &table)
+void CreateTableCommand::create_data_files(const Table &table) const
 {
     std::ofstream table_data_file(table.path + ".data", std::ios::binary);
 
@@ -104,39 +102,13 @@ void CreateTableCommand::create_data_files(const Table &table)
     }
 }
 
-void CreateTableCommand::write_string(std::ofstream& file, const std::string &data)
-{
-    size_t size = data.size();
-    file.write(reinterpret_cast<const char*>(&size), sizeof(size));
-    file.write(reinterpret_cast<const char*>(data.c_str()), size);
-}
-
-void CreateTableCommand::test_read(const std::string& name)
-{
-    Table table;
-
-    std::ifstream table_file(DB_PATH + name, std::ios::binary);
-
-//    table_file.read((char *) &table, sizeof(Table));
-    size_t size;
-    table_file.read(reinterpret_cast<char*>(&size), sizeof(size));
-    char* input = new char[size + 1];
-    table_file.read(input, size);
-    input[size] = '\0';
-    table.name = input;
-    delete[] input;
-
-    table.print();
-
-}
-
 CreateTableCommandCreator::CreateTableCommandCreator() : CommandCreator("CREATE TABLE")
 {}
 
 void CreateTableCommandCreator::createCommand(std::istream &in) const
 {
     delete new CreateTableCommand(in);
-//    delete cmd;
 }
 
 static CreateTableCommandCreator __;
+BinaryWriter CreateTableCommand::writer = BinaryWriter();

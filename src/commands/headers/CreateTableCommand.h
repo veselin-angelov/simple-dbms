@@ -7,19 +7,22 @@
 
 
 #include "../../structure/headers/Table.h"
+#include "../../helpers/headers/BinaryWriter.h"
 #include "Command.h"
 
 class CreateTableCommand
 {
+private:
+    static BinaryWriter writer;
+
 public:
     explicit CreateTableCommand(std::istream &in);
 
 private:
-    static void save_to_file(const Table &table);
-    static void create_data_files(const Table &table);
-    static void write_string(std::ofstream &file, const std::string& data); // TODO maybe extract to another file
+    void save_to_file(const Table &table) const;
+    void create_data_files(const Table &table) const;
 
-    static void test_read(const std::string& name); // remove
+//    static void test_read(const std::string& name); // remove
 
 };
 

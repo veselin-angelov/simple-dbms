@@ -7,9 +7,13 @@
 
 
 #include "Command.h"
+#include "../../helpers/headers/BinaryWriter.h"
 
 class InsertIntoCommand
 {
+private:
+    static BinaryWriter writer;
+
 public:
     explicit InsertIntoCommand(std::istream &in);
 };
