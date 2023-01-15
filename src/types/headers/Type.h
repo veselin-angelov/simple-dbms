@@ -7,6 +7,7 @@
 
 #include <string>
 #include "../../helpers/headers/BinaryWriter.h"
+#include "../../helpers/headers/BinaryReader.h"
 
 class Type
 {
@@ -23,6 +24,8 @@ public:
     virtual std::string readValue(const std::string &column_name, std::istream &in) const = 0;
     virtual std::size_t getSize() const = 0;
     virtual void writeToFile(BinaryWriter &writer, std::ofstream &out, const std::pair<const std::string, const std::string> &value, const std::string &table_path) const = 0;
+    virtual std::string readFromFile(BinaryReader &reader, std::ifstream &in, const std::string &table_path) const = 0;
+    virtual bool compare(std::string &val1, std::string &val2, std::string &op) const = 0;
 };
 
 class TypeCreator

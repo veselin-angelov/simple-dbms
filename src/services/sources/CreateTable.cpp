@@ -13,10 +13,10 @@ void CreateTable::create(const Table &table) const
 
     if (!table_file.is_open()) throw std::runtime_error("Opening table file failed!");
 
-    writer.write_number(table_file, table.valid_position);
+    writer.write_size_t(table_file, table.valid_position);
 
     size_t size = table.columns.size();
-    writer.write_number(table_file, size);
+    writer.write_size_t(table_file, size);
 
     for (auto &column: table.columns)
     {
@@ -27,8 +27,6 @@ void CreateTable::create(const Table &table) const
     if (table.primary_key) writer.write_string(table_file, table.primary_key->getName());
 
     create_data_files(table);
-
-    table.print();
 }
 
 void CreateTable::create_data_files(const Table &table) const

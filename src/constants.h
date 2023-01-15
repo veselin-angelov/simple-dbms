@@ -6,24 +6,8 @@
 #define DBMS_CONSTANTS_H
 
 #include <string>
-#include <map>
 
-static std::string DB_PATH = "/home/veselin/Documents/DS/simple-dbms/databases/";
-
-enum TypeEnum
-{
-    INTEGER,
-    DOUBLE,
-    STRING,
-    BOOLEAN,
-};
-
-static const std::map<std::string, std::string> types_map = {
-        {"int", "int"},
-        {"double", "double"},
-        {"string", "string"},
-        {"bool", "bool"},
-};
+static std::string DB_PATH = "/home/vesko/Documents/FMI/DS/simple-dbms/databases/";
 
 
 #endif //DBMS_CONSTANTS_H

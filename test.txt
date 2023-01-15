@@ -1,0 +1,11 @@
+SELECT * FROM students;
+INSERT INTO students ("Veselin Angelov", 1001, 2, true, 5.00);
+CREATE TABLE students (name string, fn int, group int, is_active bool, sdp_grade double) PRIMARY KEY fn;
+
+SELECT name FROM students WHERE is_active=true;
+SELECT name, is_active, fn FROM students;
+
+
+SELECT * FROM test1;
+INSERT INTO test1 (1000, "Ivan" Petrov");
+CREATE TABLE test1 (fn int, name string) PRIMARY KEY fn;

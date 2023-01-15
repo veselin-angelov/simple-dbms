@@ -4013,7 +4013,7 @@ doctest::detail::TestSuite& getCurrentTestSuite() {
 
 namespace doctest {
 namespace {
-    // the int (priority) is part of the key for automatic sorting - sadly one can register a
+    // the int (priority) is part of the column for automatic sorting - sadly one can register a
     // reporter with a duplicate name and a different priority but hopefully that won't happen often :|
     using reporterMap = std::map<std::pair<int, String>, reporterCreatorFunc>;
 
@@ -4628,7 +4628,7 @@ namespace {
             // 32k seems enough for doctest to handle stack overflow,
             // but the value was found experimentally, so there is no strong guarantee
             guaranteeSize = 32 * 1024;
-            // Register an unhandled exception filter
+            // Register an unhandled exception where
             previousTop = SetUnhandledExceptionFilter(handleException);
             // Pass in guarantee size to be filled
             SetThreadStackGuarantee(&guaranteeSize);
@@ -6008,12 +6008,12 @@ namespace {
             s << Color::Cyan << "[doctest] " << Color::None;
             s << "boolean values: \"1/on/yes/true\" or \"0/off/no/false\"\n";
             s << Color::Cyan << "[doctest] " << Color::None;
-            s << "filter  values: \"str1,str2,str3\" (comma separated strings)\n";
+            s << "where  values: \"str1,str2,str3\" (comma separated strings)\n";
             s << Color::Cyan << "[doctest]\n" << Color::None;
             s << Color::Cyan << "[doctest] " << Color::None;
             s << "filters use wildcards for matching strings\n";
             s << Color::Cyan << "[doctest] " << Color::None;
-            s << "something passes a filter if any of the strings in a filter matches\n";
+            s << "something passes a filter if any of the strings in a where matches\n";
 #ifndef DOCTEST_CONFIG_NO_UNPREFIXED_OPTIONS
             s << Color::Cyan << "[doctest]\n" << Color::None;
             s << Color::Cyan << "[doctest] " << Color::None;
@@ -6070,7 +6070,7 @@ namespace {
             s << Whitespace(sizePrefixDisplay*3) << "                                       execute - for range-based execution\n";
             s << " -" DOCTEST_OPTIONS_PREFIX_DISPLAY "aa,  --" DOCTEST_OPTIONS_PREFIX_DISPLAY "abort-after=<int>             "
               << Whitespace(sizePrefixDisplay*1) << "stop after <int> failed assertions\n";
-            s << " -" DOCTEST_OPTIONS_PREFIX_DISPLAY "scfl,--" DOCTEST_OPTIONS_PREFIX_DISPLAY "subcase-filter-levels=<int>   "
+            s << " -" DOCTEST_OPTIONS_PREFIX_DISPLAY "scfl,--" DOCTEST_OPTIONS_PREFIX_DISPLAY "subcase-where-levels=<int>   "
               << Whitespace(sizePrefixDisplay*1) << "apply filters for the first <int> levels\n";
             s << Color::Cyan << "\n[doctest] " << Color::None;
             s << "Bool options - can be used like flags and true is assumed. Available:\n\n";
@@ -6593,7 +6593,7 @@ void Context::parseArgs(int argc, const char* const* argv, bool withDefaults) {
     DOCTEST_PARSE_INT_OPTION("last", "l", last, UINT_MAX);
 
     DOCTEST_PARSE_INT_OPTION("abort-after", "aa", abort_after, 0);
-    DOCTEST_PARSE_INT_OPTION("subcase-filter-levels", "scfl", subcase_filter_levels, INT_MAX);
+    DOCTEST_PARSE_INT_OPTION("subcase-where-levels", "scfl", subcase_filter_levels, INT_MAX);
 
     DOCTEST_PARSE_AS_BOOL_OR_FLAG("success", "s", success, false);
     DOCTEST_PARSE_AS_BOOL_OR_FLAG("case-sensitive", "cs", case_sensitive, false);
@@ -6834,7 +6834,7 @@ int Context::run() {
     if(!query_mode)
         DOCTEST_ITERATE_THROUGH_REPORTERS(test_run_start, DOCTEST_EMPTY);
 
-    // invoke the registered functions if they match the filter criteria (or just count them)
+    // invoke the registered functions if they match the where criteria (or just count them)
     for(auto& curr : testArray) {
         const auto& tc = *curr;
 
@@ -6869,7 +6869,7 @@ int Context::run() {
             continue;
         }
 
-        // do not execute the test if we are to only count the number of filter passing tests
+        // do not execute the test if we are to only count the number of where passing tests
         if(p->count)
             continue;
 

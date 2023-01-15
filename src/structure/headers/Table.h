@@ -26,7 +26,8 @@ private:
     std::vector<Column*> columns;
     Column* primary_key = nullptr;
     std::size_t valid_position = 0;
-    std::size_t row_size;
+    std::size_t row_size = 0;
+//    TODO add which columns have index
 
 private:
     Table() = default;
@@ -35,7 +36,8 @@ private:
 
 private:
     Column* getColumnByName(std::string& name) const;
-    size_t calculateRowSize() const;
+    std::size_t calculateRowSize() const;
+    std::size_t getOffset(const std::string &column_name) const;
 
     void print() const; // remove
 
@@ -44,6 +46,8 @@ public:
     friend class CreateTable;
     friend class InsertIntoCommand;
     friend class InsertRow;
+    friend class SelectCommand;
+    friend class Select;
 };
 
 

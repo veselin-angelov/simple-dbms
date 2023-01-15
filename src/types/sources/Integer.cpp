@@ -21,6 +21,9 @@ std::string Integer::readValue(const std::string &column_name, std::istream &in)
 
     in >> input;
 
+    if (!in.good() || (in.peek() != ',' && in.peek() != ')'))
+        throw std::runtime_error("Wrong input for int column: \"" + column_name + "\"");
+
     return std::to_string(input);
 }
 
@@ -31,7 +34,28 @@ std::size_t Integer::getSize() const
 
 void Integer::writeToFile(BinaryWriter &writer, std::ofstream &out, const std::pair<const std::string, const std::string> &value, const std::string &table_path) const
 {
-    writer.write_number(out, std::stoi(value.second));
+    writer.write_int(out, std::stoi(value.second));
+}
+
+std::string Integer::readFromFile(BinaryReader &reader, std::ifstream &in, const std::string &table_path) const
+{
+    std::string value = std::to_string(reader.read_int(in));
+    return value;
+}
+
+bool Integer::compare(std::string &val1, std::string &val2, std::string &op) const
+{
+    int a = std::stoi(val1);
+    int b = std::stoi(val2);
+
+    if (op == ">") return a > b;
+    if (op == "<") return a < b;
+    if (op == ">=") return a >= b;
+    if (op == "<=") return a <= b;
+    if (op == "=") return a == b;
+    if (op == "!=") return a != b;
+
+    throw std::runtime_error("Invalid operator");
 }
 
 IntegerCreator::IntegerCreator() : TypeCreator("int")

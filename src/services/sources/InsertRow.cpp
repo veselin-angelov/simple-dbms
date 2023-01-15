@@ -33,7 +33,7 @@ void InsertRow::insert(std::map<std::string, std::string> &values, Table &table)
 
     if (!table_file.good()) throw std::runtime_error("Seeking failed!");
 
-    writer.write_number(table_file, table.valid_position);
+    writer.write_size_t(table_file, table.valid_position);
 }
 
 BinaryWriter InsertRow::writer = BinaryWriter();

@@ -2,6 +2,8 @@
 // Created by vesko on 06.01.23.
 //
 
+#include <iostream>
+#include <iomanip>
 #include "../headers/Text.h"
 #include "../../helpers/headers/Hash.h"
 
@@ -49,12 +51,48 @@ void Text::writeToFile(BinaryWriter &writer, std::ofstream &out, const std::pair
 
     writer.write_string(string_file, value.second);
 
-    writer.write_number(out, pos);
-    writer.write_number(out, size);
+    writer.write_size_t(out, pos);
+    writer.write_size_t(out, size);
     for (int i = 0; i < SHA256_DIGEST_LENGTH; i++)
     {
-        writer.write_number(out, hash.getHash()[i]);
+        writer.write_uchar(out, hash.getHash()[i]);
     }
+}
+
+std::string Text::readFromFile(BinaryReader &reader, std::ifstream &in, const std::string &table_path) const
+{
+    std::size_t pos = reader.read_size_t(in);
+    std::size_t size = reader.read_size_t(in);
+
+    in.seekg(SHA256_DIGEST_LENGTH, std::ios::cur);
+
+//    std::cout << std::endl;
+//    unsigned char hash[SHA256_DIGEST_LENGTH];
+//
+//    for (int i = 0; i < SHA256_DIGEST_LENGTH; i++)
+//    {
+//        hash[i] = reader.read_uchar(in);
+//        std::cout << std::hex << std::setw(2) << std::setfill('0') << (int)hash[i];
+//    }
+//    std::cout << std::endl;
+
+    std::ifstream string_file(table_path , std::ios::binary);
+    string_file.seekg(pos);
+    std::string value = reader.read_string(string_file);
+
+    return value;
+}
+
+bool Text::compare(std::string &val1, std::string &val2, std::string &op) const
+{
+    if (op == ">") return val1 > val2;
+    if (op == "<") return val1 < val2;
+    if (op == ">=") return val1 >= val2;
+    if (op == "<=") return val1 <= val2;
+    if (op == "=") return val1 == val2;
+    if (op == "!=") return val1 != val2;
+
+    throw std::runtime_error("Invalid operator");
 }
 
 TextCreator::TextCreator() : TypeCreator("string")

@@ -1,24 +1,20 @@
 #include <iostream>
-#include <sstream>
 #include "commands/headers/CreateTableCommand.h"
 #include "factories/headers/CommandFactory.h"
 
 int main()
 {
-    std::stringstream createCommand;
-//    createCommand << "CREATE TABLE students (name string, fn int, group int, sdp_grade double) PRIMARY KEY fn;";
-//    createCommand << "CREATE TABLE students (name string, fn int, group int, sdp_grade double);";
-    createCommand << "INSERT INTO students (\"Ivan\" Petrov\", 1000, 1, 4.00);";
+    std::ifstream createCommand("test.txt");
+
+    if (!createCommand.is_open()) throw std::runtime_error("cannot open");
+
     try
     {
-//        CreateTableCommand::create(createCommand);
         CommandFactory::getFactory().createCommand(createCommand);
-
-//        CreateTableCommand::test_read("students");
     }
     catch (std::exception &e)
     {
-        std::cout << e.what();
+        std::cout << e.what() << std::endl;
     }
 
     return 0;

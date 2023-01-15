@@ -21,6 +21,9 @@ std::string Double::readValue(const std::string &column_name, std::istream &in) 
 
     in >> input;
 
+    if (!in.good() || (in.peek() != ',' && in.peek() != ')'))
+        throw std::runtime_error("Wrong input for double column: \"" + column_name + "\"");
+
     return std::to_string(input);
 }
 
@@ -31,7 +34,28 @@ std::size_t Double::getSize() const
 
 void Double::writeToFile(BinaryWriter &writer, std::ofstream &out, const std::pair<const std::string, const std::string> &value, const std::string &table_path) const
 {
-    writer.write_number(out, std::stod(value.second));
+    writer.write_double(out, std::stod(value.second));
+}
+
+std::string Double::readFromFile(BinaryReader &reader, std::ifstream &in, const std::string &table_path) const
+{
+    std::string value = std::to_string(reader.read_double(in));
+    return value;
+}
+
+bool Double::compare(std::string &val1, std::string &val2, std::string &op) const
+{
+    double a = std::stod(val1);
+    double b = std::stod(val2);
+
+    if (op == ">") return a > b;
+    if (op == "<") return a < b;
+    if (op == ">=") return a >= b;
+    if (op == "<=") return a <= b;
+    if (op == "=") return a == b;
+    if (op == "!=") return a != b;
+
+    throw std::runtime_error("Invalid operator");
 }
 
 DoubleCreator::DoubleCreator() : TypeCreator("double")

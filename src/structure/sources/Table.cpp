@@ -16,9 +16,9 @@ Table::Table(const std::string &name) : name(name)
 
     if (!file.is_open()) throw std::runtime_error("Opening table file failed!");
 
-    valid_position = reader.read_number(file);
+    valid_position = reader.read_size_t(file);
 
-    size_t columns_count = reader.read_number(file);
+    size_t columns_count = reader.read_size_t(file);
 
     std::string column_name;
     std::string column_type_name;
@@ -35,6 +35,7 @@ Table::Table(const std::string &name) : name(name)
     }
 
     row_size = calculateRowSize();
+//    TODO load which table have index also write it in the file, when index is created
 
     file.peek();
     if (!file.good()) return;
@@ -77,12 +78,26 @@ size_t Table::calculateRowSize() const
 
     for (auto &column: columns)
     {
-        std::cout << column->getType()->getSize() << std::endl;
         size += column->getType()->getSize();
     }
 
     return size;
 }
+
+std::size_t Table::getOffset(const std::string &column_name) const
+{
+    size_t size = 0;
+
+    for (auto &column: columns)
+    {
+        if (column->getName() == column_name) break;
+
+        size += column->getType()->getSize();
+    }
+
+    return size;
+}
+
 
 Table::~Table()
 {

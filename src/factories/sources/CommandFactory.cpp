@@ -7,7 +7,7 @@
 
 const CommandCreator* CommandFactory::getCreator(const std::string &key) const
 {
-    std::cout << key << std::endl; // test
+//    std::cout << key << std::endl;
 
     for (auto &creator: creators)
     {
@@ -40,7 +40,7 @@ void CommandFactory::createCommand(std::istream &in)
         command += c;
     }
 
-    command.pop_back(); // remove last space
+    command.pop_back();
 
     const CommandCreator* creator = getCreator(command);
 

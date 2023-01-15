@@ -6,7 +6,7 @@
 
 CreateIndexCommand::CreateIndexCommand(std::istream &in)
 {
-
+//    B+TREE...
 }
 
 CreateIndexCommandCreator::CreateIndexCommandCreator() : CommandCreator("CREATE INDEX")
