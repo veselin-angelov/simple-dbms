@@ -26,6 +26,7 @@ private:
     std::vector<Column*> columns;
     Column* primary_key = nullptr;
     std::size_t valid_position = 0;
+    std::size_t row_size;
 
 private:
     Table() = default;
@@ -34,14 +35,15 @@ private:
 
 private:
     Column* getColumnByName(std::string& name) const;
+    size_t calculateRowSize() const;
 
     void print() const; // remove
 
-//    void updateValidPosition(std::size_t position) const; // TODO maybe not here
-
 public:
     friend class CreateTableCommand;
+    friend class CreateTable;
     friend class InsertIntoCommand;
+    friend class InsertRow;
 };
 
 

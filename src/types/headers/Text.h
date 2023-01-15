@@ -13,6 +13,13 @@ class Text : public Type
 public:
     Text();
     Type *clone() const override;
+
+public:
+    std::string readValue(const std::string &column_name, std::istream &in) const override;
+    std::size_t getSize() const override;
+    void writeToFile(BinaryWriter &writer, std::ofstream &out, const std::pair<const std::string, const std::string> &value, const std::string &table_path) const override;
+
+private:
 };
 
 class TextCreator : public TypeCreator

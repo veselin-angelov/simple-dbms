@@ -34,6 +34,8 @@ Table::Table(const std::string &name) : name(name)
         columns.push_back(new Column(column_name, TypeFactory::getFactory().createType(ss)));
     }
 
+    row_size = calculateRowSize();
+
     file.peek();
     if (!file.good()) return;
 
@@ -47,7 +49,8 @@ void Table::print() const
         name << " " <<
         path << " " <<
         (primary_key ? primary_key->getName() : "") << " " <<
-        valid_position << std::endl;
+        valid_position << " " <<
+        row_size << std::endl;
 
     for (auto &column: columns)
     {
@@ -66,6 +69,19 @@ Column *Table::getColumnByName(std::string &name) const
     }
 
     return nullptr;
+}
+
+size_t Table::calculateRowSize() const
+{
+    size_t size = 0;
+
+    for (auto &column: columns)
+    {
+        std::cout << column->getType()->getSize() << std::endl;
+        size += column->getType()->getSize();
+    }
+
+    return size;
 }
 
 Table::~Table()

@@ -8,7 +8,7 @@ int main()
     std::stringstream createCommand;
 //    createCommand << "CREATE TABLE students (name string, fn int, group int, sdp_grade double) PRIMARY KEY fn;";
 //    createCommand << "CREATE TABLE students (name string, fn int, group int, sdp_grade double);";
-    createCommand << "INSERT INTO students (\"Иван Петров\", 1000, 1, 4.00);";
+    createCommand << "INSERT INTO students (\"Ivan\" Petrov\", 1000, 1, 4.00);";
     try
     {
 //        CreateTableCommand::create(createCommand);

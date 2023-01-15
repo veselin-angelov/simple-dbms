@@ -8,11 +8,12 @@
 
 #include "Command.h"
 #include "../../helpers/headers/BinaryWriter.h"
+#include "../../services/headers/InsertRow.h"
 
 class InsertIntoCommand
 {
 private:
-    static BinaryWriter writer;
+    static InsertRow insertRow;
 
 public:
     explicit InsertIntoCommand(std::istream &in);

@@ -14,7 +14,7 @@ void BinaryWriter::write_string(std::ofstream& file, const std::string &data) co
     if (!file.good()) throw std::runtime_error("Something went wrong while writing a string!");
 }
 
-void BinaryWriter::write_number(std::ofstream &file, const size_t data) const
+void BinaryWriter::write_number(std::ofstream &file, const long long data) const
 {
     file.write(reinterpret_cast<const char*>(&data), sizeof(data));
     if (!file.good()) throw std::runtime_error("Something went wrong while writing a number!");

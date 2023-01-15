@@ -5,8 +5,8 @@
 #ifndef DBMS_TYPE_H
 #define DBMS_TYPE_H
 
-
 #include <string>
+#include "../../helpers/headers/BinaryWriter.h"
 
 class Type
 {
@@ -16,14 +16,14 @@ private:
 public:
     explicit Type(const std::string &name);
     virtual ~Type() = default;
-    virtual Type* clone() const = 0;
+    virtual Type *clone() const = 0;
 
 public:
-    const std::string& name() const;
-
-//    virtual std::string name() const = 0;
+    const std::string &name() const;
+    virtual std::string readValue(const std::string &column_name, std::istream &in) const = 0;
+    virtual std::size_t getSize() const = 0;
+    virtual void writeToFile(BinaryWriter &writer, std::ofstream &out, const std::pair<const std::string, const std::string> &value, const std::string &table_path) const = 0;
 };
-
 
 class TypeCreator
 {
@@ -33,13 +33,12 @@ private:
 public:
     explicit TypeCreator(const std::string &key);
     virtual ~TypeCreator() = default;
-    TypeCreator(const TypeCreator&) = delete;
-    TypeCreator& operator=(const TypeCreator&) = delete;
+    TypeCreator(const TypeCreator &) = delete;
+    TypeCreator &operator=(const TypeCreator &) = delete;
 
 public:
-    const std::string& getKey() const;
-    virtual Type* createType(std::istream &in) const = 0;
+    const std::string &getKey() const;
+    virtual Type *createType(std::istream &in) const = 0;
 };
 
-
-#endif //DBMS_TYPE_H
+#endif // DBMS_TYPE_H
