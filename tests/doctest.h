@@ -4013,7 +4013,7 @@ doctest::detail::TestSuite& getCurrentTestSuite() {
 
 namespace doctest {
 namespace {
-    // the int (priority) is part of the column for automatic sorting - sadly one can register a
+    // the int (priority) is part of the column_name for automatic sorting - sadly one can register a
     // reporter with a duplicate name and a different priority but hopefully that won't happen often :|
     using reporterMap = std::map<std::pair<int, String>, reporterCreatorFunc>;
 

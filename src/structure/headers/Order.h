@@ -17,11 +17,12 @@ enum class Ordering
 class Order
 {
 private:
-    std::string column;
+    std::string column_name;
     Ordering ordering;
 
 public:
     friend class SelectCommand;
+    friend class Select;
 };
 
 

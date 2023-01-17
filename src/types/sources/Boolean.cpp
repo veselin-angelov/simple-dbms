@@ -23,7 +23,7 @@ std::string Boolean::readValue(const std::string &column_name, std::istream &in)
     in >> std::boolalpha >> input;
 
     if (!in.good() || (in.peek() != ',' && in.peek() != ')'))
-        throw std::runtime_error("Wrong input for boolean column: \"" + column_name + "\"");
+        throw std::runtime_error("Wrong input for boolean column_name: \"" + column_name + "\"");
 
     return std::to_string(input);
 }

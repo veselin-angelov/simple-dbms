@@ -1,9 +1,16 @@
+SELECT is_active, fn FROM students WHERE fn>1000 ORDER BY name DESC;
+SELECT is_active, fn, name FROM students WHERE fn>1000 ORDER BY name DESC;
+SELECT * FROM students WHERE fn>1000 ORDER BY name DESC;
+SELECT name, is_active, fn FROM students;
+SELECT name FROM students WHERE is_active=true;
 SELECT * FROM students;
+SELECT name FROM students ORDER BY fn DESC;
+
+INSERT INTO students ("Joro pischa", 1002, 2, true, 5.00);
+INSERT INTO students ("Ivan Petrov", 1000, 2, true, 5.00);
 INSERT INTO students ("Veselin Angelov", 1001, 2, true, 5.00);
 CREATE TABLE students (name string, fn int, group int, is_active bool, sdp_grade double) PRIMARY KEY fn;
 
-SELECT name FROM students WHERE is_active=true;
-SELECT name, is_active, fn FROM students;
 
 
 SELECT * FROM test1;

@@ -128,14 +128,16 @@ Order SelectCommand::handleOrderClause(std::istream &in, Table &table) const
     std::string input;
 
     in >> input;
-    if (input != "BY") throw std::runtime_error("Wrong clause in group!");
+    if (input != "BY") throw std::runtime_error("Missing BY in order!");
 
-    in >> order.column;
+    in >> order.column_name;
 
     in >> input;
+    if (input.back() == ';') input.pop_back();
+
     if (input == "ASC") order.ordering = Ordering::ASC;
     else if (input == "DESC") order.ordering = Ordering::DESC;
-    else throw std::runtime_error("Wrong clause in group!");
+    else throw std::runtime_error("Missing ASC/DESC in clause!");
 
     return order;
 }

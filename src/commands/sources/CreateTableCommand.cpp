@@ -56,7 +56,7 @@ CreateTableCommand::CreateTableCommand(std::istream &in)
     pk.pop_back();
     table.primary_key = table.getColumnByName(pk);
 
-    if (!table.primary_key) throw std::invalid_argument("Primary column " + pk + " is one of the columns!");
+    if (!table.primary_key) throw std::invalid_argument("Primary column_name " + pk + " is one of the columns!");
 
     createTable.create(table);
     std::cout << "Table \"" + table.name + "\" created." << std::endl;

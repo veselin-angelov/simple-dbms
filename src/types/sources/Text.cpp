@@ -21,7 +21,7 @@ std::string Text::readValue(const std::string &column_name, std::istream &in) co
     char c = in.get();
 
     if (c != '"')
-        throw std::runtime_error("Wrong type for column: \"" + column_name + "\"");
+        throw std::runtime_error("Wrong type for column_name: \"" + column_name + "\"");
 
     std::string input;
     char delim;
