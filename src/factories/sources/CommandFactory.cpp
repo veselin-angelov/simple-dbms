@@ -30,7 +30,7 @@ void CommandFactory::registerCommand(const CommandCreator *creator)
     creators.push_back(creator);
 }
 
-void CommandFactory::createCommand(std::istream &in)
+bool CommandFactory::createCommand(std::istream &in)
 {
     std::string command;
     char c;
@@ -40,7 +40,9 @@ void CommandFactory::createCommand(std::istream &in)
         command += c;
     }
 
-    command.pop_back();
+    if (command.back() == ' ') command.pop_back();
+
+    if (command == "QUIT") return false;
 
     const CommandCreator* creator = getCreator(command);
 
@@ -48,7 +50,7 @@ void CommandFactory::createCommand(std::istream &in)
     {
         in.unget();
         creator->createCommand(in);
-        return;
+        return true;
     }
 
     throw std::invalid_argument("Command not found!");

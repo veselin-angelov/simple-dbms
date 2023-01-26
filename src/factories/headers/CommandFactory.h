@@ -28,7 +28,7 @@ public:
 public:
     static CommandFactory& getFactory();
     void registerCommand(const CommandCreator* creator);
-    void createCommand(std::istream &in);
+    bool createCommand(std::istream &in);
 };
 
 

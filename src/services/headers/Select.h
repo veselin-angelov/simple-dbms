@@ -23,7 +23,7 @@ private:
     bool where(Table &table, std::ifstream &table_file_data, Filter &filter) const;
 
     std::vector<std::map<std::string, std::string>>
-        get_rows(Table &table, std::vector<Column*> &selected_columns, std::ifstream &table_file_data, Filter &filter) const;
+        getRows(Table &table, std::vector<Column*> &selected_columns, std::ifstream &table_file_data, Filter &filter) const;
 
     std::vector<Column*> getSelectedColumns(Table &table, std::vector<std::string> &column_names) const;
 

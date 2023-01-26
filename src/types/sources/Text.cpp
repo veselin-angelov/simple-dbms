@@ -83,7 +83,7 @@ std::string Text::readFromFile(BinaryReader &reader, std::ifstream &in, const st
     return value;
 }
 
-bool Text::compare(std::string &val1, std::string &val2, std::string &op) const
+bool Text::compare(const std::string &val1, const std::string &val2, const std::string &op) const
 {
     if (op == ">") return val1 > val2;
     if (op == "<") return val1 < val2;

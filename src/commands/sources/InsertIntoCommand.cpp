@@ -53,7 +53,7 @@ InsertIntoCommand::InsertIntoCommand(std::istream &in)
         std::vector<Column*> selected_columns;
         selected_columns.push_back(table.primary_key);
 
-        auto rows = select1.get_rows(table, selected_columns, in, filter);
+        auto rows = select1.getRows(table, selected_columns, in, filter);
 
         if (!rows.empty()) throw std::runtime_error("Primary key exists!");
     }

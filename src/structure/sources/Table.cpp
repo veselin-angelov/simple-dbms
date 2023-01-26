@@ -14,7 +14,7 @@ Table::Table(const std::string &name) : name(name)
 
     std::ifstream file(path, std::ios::binary);
 
-    if (!file.is_open()) throw std::runtime_error("Opening table file failed!");
+    if (!file.is_open()) throw std::runtime_error("Table \"" + name + "\" does not exist!");
 
     valid_position = reader.read_size_t(file);
 

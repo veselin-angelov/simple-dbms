@@ -47,7 +47,7 @@ std::string Boolean::readFromFile(BinaryReader &reader, std::ifstream &in, const
     return value.str();
 }
 
-bool Boolean::compare(std::string &val1, std::string &val2, std::string &op) const
+bool Boolean::compare(const std::string &val1, const std::string &val2, const std::string &op) const
 {
     bool a;
     bool b;

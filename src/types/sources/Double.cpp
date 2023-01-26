@@ -43,7 +43,7 @@ std::string Double::readFromFile(BinaryReader &reader, std::ifstream &in, const 
     return value;
 }
 
-bool Double::compare(std::string &val1, std::string &val2, std::string &op) const
+bool Double::compare(const std::string &val1, const std::string &val2, const std::string &op) const
 {
     double a = std::stod(val1);
     double b = std::stod(val2);

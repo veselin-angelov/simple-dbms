@@ -13,32 +13,42 @@ void Select::select(Table &table, std::vector<std::string> &column_names, Filter
     if (!table_file_data.is_open()) throw std::runtime_error("Could not open file!");
 
     std::vector<std::map<std::string, std::string>> rows;
-    std::vector<Column *> selected_columns = table.columns;
+    std::vector<Column*> selected_columns = table.columns;
 
     if (!column_names.empty()) selected_columns = getSelectedColumns(table, column_names);
 
     bool added = false;
 
-    if (!order.column_name.empty() &&
-        std::find(selected_columns.begin(),
-                  selected_columns.end(),
-                  table.getColumnByName(order.column_name)) == selected_columns.end()
-                  )
+    bool is_order_column_in_selected_columns =
+        std::find(
+            selected_columns.begin(),selected_columns.end(),table.getColumnByName(order.column_name)
+            ) == selected_columns.end();
+
+    if (!order.column_name.empty() && is_order_column_in_selected_columns)
     {
         selected_columns.push_back(table.getColumnByName(order.column_name));
         added = true;
     }
 
-    rows = get_rows(table, selected_columns, table_file_data, filter);
+    rows = getRows(table, selected_columns, table_file_data, filter);
+
+    if (rows.empty())
+    {
+        std::cout << "No matching rows found!" << std::endl;
+        return;
+    }
 
     if (!order.column_name.empty())
     {
-        std::sort(rows.begin(), rows.end(), [&order](auto &lhs, auto &rhs)
-        {
-            return lhs.at(order.column_name) < rhs.at(order.column_name);
-        });
+        Type* column_type = table.getColumnByName(order.column_name)->getType();
+        std::string op = "<";
 
-        if (order.ordering == Ordering::DESC) std::reverse(rows.begin(), rows.end());
+        if (order.ordering == Ordering::DESC) op = ">";
+
+        std::sort(rows.begin(), rows.end(), [&order, &column_type, &op](auto &lhs, auto &rhs)
+        {
+            return column_type->compare(lhs.at(order.column_name), rhs.at(order.column_name), op);
+        });
     }
 
     // output
@@ -69,7 +79,7 @@ bool Select::where(Table &table,
     return !col->getType()->compare(value, filter.value, filter.op.value);
 }
 
-std::vector<std::map<std::string, std::string>> Select::get_rows(
+std::vector<std::map<std::string, std::string>> Select::getRows(
         Table &table,
         std::vector<Column*> &selected_columns,
         std::ifstream &table_file_data,
@@ -125,17 +135,7 @@ std::vector<Column *> Select::getSelectedColumns(Table &table, std::vector<std::
 
     for (auto &column_name: column_names)
     {
-        auto it = std::find_if(
-                table.columns.begin(),
-                table.columns.end(),
-                [&column_name](Column *&col)
-                { return col->getName() == column_name; }
-        );
-
-        if (it != table.columns.end())
-        {
-            selected_columns.push_back(*it);
-        }
+        selected_columns.push_back(table.getColumnByName(column_name));
     }
 
     return selected_columns;

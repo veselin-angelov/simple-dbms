@@ -16,6 +16,12 @@ SelectCommand::SelectCommand(std::istream &in)
     Filter filter;
     Order order;
 
+    //clear whitespace
+    while (std::isspace(in.peek())) in.get();
+
+    // factory
+    // if * -> all
+    // if AVG(, MIN(, MAX(, SUM(, COUNT(
     if (in.peek() == '*')
     {
         in.get(); // *
@@ -35,7 +41,7 @@ SelectCommand::SelectCommand(std::istream &in)
     }
 
     in >> input;
-    if (input.back() == ';')
+    if (input.back() == ';') // TODO different way of
     {
         end = true;
         input.pop_back();
@@ -74,16 +80,13 @@ SelectCommand::SelectCommand(std::istream &in)
 
 void SelectCommand::checkIfColumnsExist(std::vector<std::string> &column_names, Table &table) const
 {
+    Column *column;
+
     for (auto &column_name: column_names)
     {
-        auto it = std::find_if(
-                table.columns.begin(),
-                table.columns.end(),
-                [&column_name](Column *&col)
-                { return col->getName() == column_name; }
-        );
+        column = table.getColumnByName(column_name);
 
-        if (it == table.columns.end())
+        if (!column)
         {
             throw std::runtime_error("Column with name: \"" + column_name + "\" not found!");
         }

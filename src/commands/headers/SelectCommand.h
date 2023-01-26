@@ -24,6 +24,7 @@ private:
     void checkIfColumnsExist(std::vector<std::string> &column_names, Table &table) const;
     Filter handleWhereClause(std::istream &in, Table &table) const;
     Order handleOrderClause(std::istream &in, Table &table) const;
+//    std::string readLine
 
 };
 

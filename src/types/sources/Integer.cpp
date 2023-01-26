@@ -43,7 +43,7 @@ std::string Integer::readFromFile(BinaryReader &reader, std::ifstream &in, const
     return value;
 }
 
-bool Integer::compare(std::string &val1, std::string &val2, std::string &op) const
+bool Integer::compare(const std::string &val1, const std::string &val2, const std::string &op) const
 {
     int a = std::stoi(val1);
     int b = std::stoi(val2);
